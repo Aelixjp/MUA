@@ -1,0 +1,5 @@
+g = 9.8m/s^2
+a = (vf - vi) / t
+t = (vf - vi) / a
+vf = vi + (at)
+d = (vf + (vi * t)) / 2
