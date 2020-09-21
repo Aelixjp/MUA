@@ -32,7 +32,11 @@ window.onload = ()=>{
 
     function addEvents(){
         boton.addEventListener("click", () => {
-            carrito.calculate({accel: aceleracion.value, time: tiempo.value});
+            carrito.calculate({
+                accel: aceleracion.value, 
+                time: tiempo.value, 
+                cuerdaDist: cuerda.orgW + 5
+            }, cuerda, weight);
         });
     }
 

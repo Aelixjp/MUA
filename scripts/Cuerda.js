@@ -7,6 +7,7 @@ export default class Cuerda{
         this.w = w;
         this.h = h;
         this.r = r;
+        this.orgX = x;
         this.orgW = w;
         this.orgH = h;
         this.currDeltaW = 0;
@@ -28,6 +29,13 @@ export default class Cuerda{
 
     move(newX){
         this.x = newX;
+    }
+
+    reset(){
+        this.x = this.orgX;
+        this.w = this.orgW;
+        this.h = this.orgH;
+        this.currDeltaW = 0;
     }
 
     reduceSize(ballD){

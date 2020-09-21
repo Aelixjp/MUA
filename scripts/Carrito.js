@@ -10,16 +10,18 @@ export default class Carrito{
         this.y = y;
         this.w = w;
         this.h = h;
+        this.orgX = x;
         this.weight = weight;
         this.accel = -9.8;
         this.time = 0;
         this.distance = 0;
         this.initialVel = 0;
-        this.finalVel = 0;
+        this.finalVel = this.initialVel;
         this.vel = this.initialVel;
-        this.realVel = this.initialVel;
         this.chrono = new Chrono();
-        this.stopped = false;
+        this.stopped = true;
+        this.step = 0;
+        this.canReset = false;
     }
 
     get izquierda(){
@@ -54,10 +56,12 @@ export default class Carrito{
             tick = this.chrono.tick();
 
             if(this.derecha < limit - 2.5){
-                this.realVel = tick * this.accel;
-                this.x += this.realVel;
+                this.finalVel = tick * this.accel;
+                this.x += tick * this.step;
             }else{
-                this.realVel = tick * this.accel;
+                //The car is stopped!
+                this.canReset = true;
+                this.finalVel = tick * this.accel;
                 this.chrono.stop();
             }
         }
@@ -65,7 +69,7 @@ export default class Carrito{
         this.ctx.save();
         this.ctx.strokeStyle = "#0FF";
         this.ctx.font = "20px Georgia";
-        this.ctx.strokeText(-this.realVel.toFixed(3), 730, 305);
+        this.ctx.strokeText(-this.finalVel.toFixed(3), 880, 295);
         this.ctx.restore();
 
         this.ctx.save();
@@ -75,16 +79,25 @@ export default class Carrito{
         this.ctx.restore();
     }
 
-    calculate({accel, time}){
+    reset(){
+        this.x = this.orgX;
+    }
+
+    resetSimulation(string, weight){
+        this.reset();
+        string.reset();
+        this.chrono.reset();
+    }
+
+    calculate({accel, time, cuerdaDist}, ...simulationParams){
+        if(this.canReset){
+            this.resetSimulation(...simulationParams);
+            this.canReset = false;
+        }
         this.accel = -accel;
         this.time = time;
-
-        if(Object.values(data).length >= 2){
-            const finalVel = utils.finalVel(0, -this.accel, time);
-            console.log(finalVel);
-        }else{
-            alert("Se requieren ambos parametros!");
-        }
+        this.step = -(cuerdaDist / utils.distance(-this.accel, this.time)) / ((9.8 / -this.accel) * 5.179);
+        this.stopped = false;
     }
 
 }
