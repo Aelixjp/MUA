@@ -10,8 +10,8 @@ export default class Weight{
 
     draw(offsetY = 0){
         this.ctx.save();
-        this.ctx.fillStyle = "#fff";
-        this.ctx.strokeStyle = "#fff";
+        this.ctx.fillStyle = "grey";
+        this.ctx.strokeStyle = "#grey";
         this.ctx.beginPath();
         this.ctx.moveTo(this.x, offsetY + this.y);
         this.ctx.lineTo(this.x + 10,          offsetY + this.y - this.h);

@@ -26,7 +26,9 @@ window.onload = ()=>{
         ball    = new Ball(ctx, 600, carrito.y + (carrito.h / 2) + 7, 6);
         weight  = new Weight(ctx, 590, cuerda.y + cuerda.orgH + 60, 30, 20);
         loader  = new Loader;
-        loader.loadSource("Carrito", "automovil", "webp").then(draw);
+        const carPromise = loader.loadSource("Carrito", "automovil", "webp");
+        const fondoPromise = loader.loadSource("Fondo", "background", "jpeg");
+        Promise.all([carPromise, fondoPromise]).then(draw);
         addEvents();
     }
 
@@ -36,15 +38,17 @@ window.onload = ()=>{
                 accel: aceleracion.value, 
                 time: tiempo.value, 
                 cuerdaDist: cuerda.orgW + 5
-            }, cuerda, weight);
+            }, cuerda);
         });
     }
 
     function draw(){
-        grender.drawBG("#515A5A");
+        grender.drawBG(loader.resources.get("Fondo"));
+        grender.drawMountain();
         weight.draw(cuerda.currDeltaW);
         ball.draw();
         grender.drawRail(canvas.width, canvas.height);
+        grender.drawBox();
         carrito.draw(loader.resources.get("Carrito"));
         carrito.move(ball.left);
         cuerda.draw();

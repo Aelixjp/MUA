@@ -15,7 +15,7 @@ export default class Cuerda{
 
     draw(){
         this.ctx.save();
-        this.ctx.strokeStyle = "#fff";
+        this.ctx.strokeStyle = "#000";
         this.ctx.lineWidth = .5;
         this.ctx.beginPath();
         this.ctx.moveTo(this.x, this.y);

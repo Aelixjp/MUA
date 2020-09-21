@@ -58,10 +58,12 @@ export default class Carrito{
             if(this.derecha < limit - 2.5){
                 this.finalVel = tick * this.accel;
                 this.x += tick * this.step;
+                this.distance = utils.distance(-this.accel, tick);
             }else{
                 //The car is stopped!
                 this.canReset = true;
                 this.finalVel = tick * this.accel;
+                this.distance = utils.distance(-this.accel, tick);
                 this.chrono.stop();
             }
         }
@@ -77,16 +79,26 @@ export default class Carrito{
         this.ctx.font = "20px Georgia";
         this.ctx.strokeText(tick.toFixed(3), 500, 100);
         this.ctx.restore();
+
+        this.ctx.save();
+        this.ctx.strokeStyle = "#0FF";
+        this.ctx.font = "20px Georgia";
+        this.ctx.strokeText(this.distance, 880, 360);
+        this.ctx.restore();
     }
 
     reset(){
         this.x = this.orgX;
+        this.initialVel = 0;
+        this.finalVel = 0;
+        this.step = 0;
+        this.distance = 0;
     }
 
-    resetSimulation(string, weight){
+    resetSimulation(string){
         this.reset();
         string.reset();
-        this.chrono.reset();
+        this.chrono.restart();
     }
 
     calculate({accel, time, cuerdaDist}, ...simulationParams){
